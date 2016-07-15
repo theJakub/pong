@@ -120,8 +120,8 @@
 	// makes a var for the id ball and sets starting position and velocity.
 	var ball_element = document.getElementById("ball");
 	var ball_model = {
-		x: Math.floor(Math.random() * 600),
-		y: Math.floor(Math.random() * 400),
+		x: 700,
+		y: 500,
 		vx: -7, // faster ball movement along x axis
 		vy: -5
 	};
@@ -136,6 +136,13 @@
 		paddle_1_model.y = evt.pageY - evt.target.offsetTop - 50;
 		// paddle_2_model.y = evt.pageY - evt.target.offsetTop - 50;
 	}
+
+	// ball restart
+	function ballStart(){
+		ball_model.vx = -7;
+		ball_model.vy = -5;
+	}
+	
 
 	//update
 	function update(){
@@ -172,18 +179,20 @@
 			paddle_2_model.vy = paddle_2_model.vy * -1;
 		}
 		// paddle 2 change direction if it gets too far away from ball
-		if (paddle_2_model.vy > 0 && ball_model.vy > 0 && paddle_2_model.y > ball_model.y + 20 && ball_model.vx > 0){
+		if (paddle_2_model.vy > 0 && ball_model.vy > 0 && paddle_2_model.y > ball_model.y + 60 && ball_model.vx > 0){
 			paddle_2_model.vy = paddle_2_model.vy * -1;
 		}
+
 		if (paddle_2_model.vy < 0 && ball_model.vy < 0 && paddle_2_model.y < ball_model.y - 120 && ball_model.vx > 0){
 			paddle_2_model.vy = paddle_2_model.vy * -1;
 		}
 		// paddle 2 staying in middle while ball is moving away
-		if (ball_model.vx < 0 && paddle_2_model.y < 220){
+		if (ball_model.vx < 0 && paddle_2_model.y < 245){
 			paddle_2_model.vy = 3;
-		}
-		if (ball_model.vx < 0 && paddle_2_model.y > 280){
+		} else if (ball_model.vx < 0 && paddle_2_model.y > 255){
 			paddle_2_model.vy = -3;
+		} else if (ball_model.vx < 0){
+			paddle_2_model.vy = 0;
 		}
 
 
@@ -206,9 +215,10 @@
 				ball_model = {
 					x: Math.floor(Math.random() * 600) + 50, // makes the ball start in a random place inside my pixel range
 					y: Math.floor(Math.random() * 400) + 50,
-					vx: -7,
-					vy: -5
+					vx: 0,
+					vy: 0
 				};
+				setTimeout(ballStart, 1000);
 			}
 		}
 			// hitting paddle 2 or scoring
@@ -220,9 +230,10 @@
 				ball_model = {
 					x: Math.floor(Math.random() * 600) + 50,
 					y: Math.floor(Math.random() * 400) + 50,
-					vx: -7,
-					vy: -5
+					vx: 0,
+					vy: 0
 				};
+				setTimeout(ballStart, 1000);
 			}
 		}
 
@@ -254,7 +265,6 @@
 		update();
 		draw();
 	}
-
 	document.getElementById("screen").onmousemove = onMouseMove;
 	setInterval(loop, 1000/60);
 
